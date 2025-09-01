@@ -1,0 +1,31 @@
+{
+  "name": "hobi-x-server",
+  "version": "1.0.0",
+  "description": "Hobi-X Bulmaca Oyunları API",
+  "main": "server/app.js",
+  "scripts": {
+    "start": "node server/app.js",
+    "dev": "nodemon server/app.js",
+    "setup-db": "node -e \"require('child_process').exec('mysql -h srv1787.hstgr.io -u u588148465_hobix -p u588148465_tuncay < ./server/config/schema.sql', (error, stdout, stderr) => { if (error) { console.error('Hata:', error); return; } console.log('Veritabanı şeması başarıyla oluşturuldu!'); })\""
+  },
+  "keywords": [
+    "bulmaca",
+    "oyun",
+    "api",
+    "türkçe"
+  ],
+  "author": "Hobi-X",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^5.1.1",
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.1",
+    "express": "^5.1.0",
+    "helmet": "^8.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "mysql2": "^3.14.4"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.10"
+  }
+}
