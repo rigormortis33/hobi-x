@@ -1,0 +1,51 @@
+# Dependencies
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# React Native
+.expo/
+.expo-shared/
+*.keystore
+*.p12
+*.mobileprovision
+
+# iOS
+ios/build/
+ios/Pods/
+
+# Android
+android/build/
+android/app/build/
+android/.gradle/
+
+# VS Code
+.vscode/
+
+# Environment variables
+.env
+.env.local
+.env.production
+
+# Logs
+logs
+*.log
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Dependency directories
+node_modules/
+jspm_packages/
+
+# Build directories
+build/
+dist/
+
+# Temporary directories
+tmp/
+temp/

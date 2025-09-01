@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hobi-X Mobil Uygulama Önizleme</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #FCFCFD;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .phone-frame {
+            width: 375px;
+            height: 812px;
+            background: #000;
+            border-radius: 40px;
+            padding: 8px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+        .screen {
+            width: 100%;
+            height: 100%;
+            background: #FCFCFD;
+            border-radius: 32px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .status-bar {
+            height: 44px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .container {
+            padding: 0 16px;
+            height: calc(100% - 44px);
+            overflow: hidden;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+            padding-top: 8px;
+        }
+
+        .header-left h1 {
+            font-size: 28px;
+            font-weight: 800;
+            color: #0B1621;
+            letter-spacing: 0.5px;
+        }
+
+        .header-left .accent {
+            color: #3B82F6;
+        }
+
+        .header-left .subtitle {
+            font-size: 12px;
+            font-weight: 600;
+            color: #54606C;
+            opacity: 0.9;
+            margin-top: 2px;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .icon-button {
+            padding: 8px 10px;
+            border: 1px solid rgba(0,0,0,0.06);
+            border-radius: 12px;
+            background: #F6F7FA;
+            min-width: 44px;
+            min-height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+
+        .icon-button:hover {
+            opacity: 0.8;
+        }
+
+        .banner {
+            display: flex;
+            align-items: center;
+            padding: 14px;
+            border-radius: 16px;
+            border: 1px solid rgba(0,0,0,0.06);
+            margin-bottom: 16px;
+            gap: 12px;
+            background: #EEF2FF;
+        }
+
+        .banner-content {
+            flex: 1;
+        }
+
+        .banner-title {
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #1E2A78;
+        }
+
+        .banner-text {
+            font-size: 14px;
+            margin-top: 2px;
+            font-weight: 600;
+            color: #1E2A78;
+        }
+
+        .cta-button {
+            padding: 10px 16px;
+            border-radius: 12px;
+            background: #3B82F6;
+            color: white;
+            font-weight: 800;
+            letter-spacing: 0.3px;
+            border: none;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+
+        .cta-button:hover {
+            opacity: 0.9;
+        }
+
+        .games-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 100px;
+            max-height: 500px;
+            overflow-y: auto;
+        }
+
+        .game-card {
+            border-radius: 18px;
+            padding: 14px;
+            min-height: 120px;
+            border: 1px solid rgba(0,0,0,0.06);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            cursor: pointer;
+            transition: transform 0.2s;
+            background: white;
+        }
+
+        .game-card:hover {
+            transform: scale(0.97);
+        }
+
+        .game-card .tint {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 42px;
+            opacity: 0.7;
+        }
+
+        .game-card .tint-overlay {
+            position: absolute;
+            top: 26px;
+            left: 0;
+            right: 0;
+            height: 24px;
+            opacity: 0.6;
+        }
+
+        .game-card .emoji {
+            position: absolute;
+            top: 10px;
+            right: 12px;
+            font-size: 28px;
+            opacity: 0.9;
+        }
+
+        .game-card .title {
+            font-size: 16px;
+            font-weight: 700;
+            color: #0B1621;
+            z-index: 1;
+        }
+
+        .bottom-nav {
+            position: absolute;
+            bottom: 12px;
+            left: 12px;
+            right: 12px;
+            height: 64px;
+            border-radius: 18px;
+            border: 1px solid rgba(0,0,0,0.06);
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+            padding: 0 12px;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            flex: 1;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+
+        .nav-item:hover {
+            opacity: 0.7;
+        }
+
+        .nav-item .emoji {
+            font-size: 18px;
+            margin-bottom: 4px;
+        }
+
+        .nav-item .label {
+            font-size: 12px;
+            font-weight: 700;
+            color: #54606C;
+        }
+
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 10px 15px;
+            background: #3B82F6;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            z-index: 1000;
+        }
+
+        .dark-theme {
+            background: #0B1220;
+        }
+
+        .dark-theme .screen {
+            background: #0B1220;
+        }
+
+        .dark-theme .header-left h1 {
+            color: #E6EDF7;
+        }
+
+        .dark-theme .header-left .subtitle {
+            color: #94A3B8;
+        }
+
+        .dark-theme .icon-button {
+            background: #121A2A;
+            border-color: rgba(255,255,255,0.06);
+        }
+
+        .dark-theme .banner {
+            background: #0F172A;
+            border-color: rgba(255,255,255,0.06);
+        }
+
+        .dark-theme .banner-title,
+        .dark-theme .banner-text {
+            color: #CBD5E1;
+        }
+
+        .dark-theme .game-card {
+            background: #121A2A;
+            border-color: rgba(255,255,255,0.06);
+        }
+
+        .dark-theme .game-card .title {
+            color: #E6EDF7;
+        }
+
+        .dark-theme .bottom-nav {
+            background: #121A2A;
+            border-color: rgba(255,255,255,0.06);
+        }
+
+        .dark-theme .nav-item .label {
+            color: #94A3B8;
+        }
+    </style>
+</head>
+<body>
+    <button class="theme-toggle" onclick="toggleTheme()">🌙 Tema Değiştir</button>
+    
+    <div class="phone-frame">
+        <div class="screen">
+            <div class="status-bar">
+                <span>9:41</span>
+                <span>100% 🔋</span>
+            </div>
+            
+            <div class="container">
+                <div class="header">
+                    <div class="header-left">
+                        <h1>Hobi<span class="accent">-X</span></h1>
+                        <div class="subtitle">Oyun Merkezi</div>
+                    </div>
+                    <div class="header-right">
+                        <div class="icon-button">🌞</div>
+                        <div class="icon-button">👤</div>
+                    </div>
+                </div>
+
+                <div class="banner">
+                    <div class="banner-content">
+                        <div class="banner-title">Bugünün Oyunu</div>
+                        <div class="banner-text">Sudoku — Zihnini ısıt, seriyi başlat!</div>
+                    </div>
+                    <button class="cta-button">Oyna</button>
+                </div>
+
+                <div class="games-grid">
+                    <div class="game-card">
+                        <div class="tint" style="background: #FFD6AE;"></div>
+                        <div class="tint-overlay" style="background: #FFB77A;"></div>
+                        <div class="emoji">🪢</div>
+                        <div class="title">Adam Asmaca</div>
+                    </div>
+
+                    <div class="game-card">
+                        <div class="tint" style="background: #C9E8FF;"></div>
+                        <div class="tint-overlay" style="background: #9FD4FF;"></div>
+                        <div class="emoji">🔢</div>
+                        <div class="title">Sudoku</div>
+                    </div>
+
+                    <div class="game-card">
+                        <div class="tint" style="background: #D5F5E3;"></div>
+                        <div class="tint-overlay" style="background: #A5E8CE;"></div>
+                        <div class="emoji">🔍</div>
+                        <div class="title">Kelime Avı</div>
+                    </div>
+
+                    <div class="game-card">
+                        <div class="tint" style="background: #E9D5FF;"></div>
+                        <div class="tint-overlay" style="background: #C4B5FD;"></div>
+                        <div class="emoji">🧠</div>
+                        <div class="title">Eşleştirme</div>
+                    </div>
+
+                    <div class="game-card">
+                        <div class="tint" style="background: #FFE3E3;"></div>
+                        <div class="tint-overlay" style="background: #FFC6C6;"></div>
+                        <div class="emoji">🎲</div>
+                        <div class="title">2048</div>
+                    </div>
+
+                    <div class="game-card">
+                        <div class="tint" style="background: #FDE68A;"></div>
+                        <div class="tint-overlay" style="background: #FCD34D;"></div>
+                        <div class="emoji">❌</div>
+                        <div class="title">X-O</div>
+                    </div>
+                </div>
+
+                <div class="bottom-nav">
+                    <div class="nav-item">
+                        <div class="emoji">🏠</div>
+                        <div class="label">Ana Ekran</div>
+                    </div>
+                    <div class="nav-item">
+                        <div class="emoji">⭐</div>
+                        <div class="label">Popüler</div>
+                    </div>
+                    <div class="nav-item">
+                        <div class="emoji">🎯</div>
+                        <div class="label">Görevler</div>
+                    </div>
+                    <div class="nav-item">
+                        <div class="emoji">👤</div>
+                        <div class="label">Profil</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let isDark = false;
+        
+        function toggleTheme() {
+            isDark = !isDark;
+            document.body.className = isDark ? 'dark-theme' : '';
+            document.querySelector('.theme-toggle').textContent = isDark ? '🌞 Tema Değiştir' : '🌙 Tema Değiştir';
+        }
+
+        // Game card click animations
+        document.querySelectorAll('.game-card').forEach(card => {
+            card.addEventListener('click', function() {
+                this.style.transform = 'scale(0.95)';
+                setTimeout(() => {
+                    this.style.transform = 'scale(1)';
+                    const gameName = this.querySelector('.title').textContent;
+                    if (gameName === 'Sudoku') {
+                        alert('🔢 Sudoku oyunu başlatılıyor!\n\n✨ Özellikler:\n• 9x9 sayı bulmacası\n• Otomatik çözüm kontrolü\n• İpucu sistemi\n• Zamanlayıcı\n• Hata sayacı\n\nReact Native uygulamasında tam sürümü mevcuttur!');
+                    } else {
+                        alert(`${gameName} oyunu geliştiriliyor...`);
+                    }
+                }, 100);
+            });
+        });
+
+        // CTA button click
+        document.querySelector('.cta-button').addEventListener('click', function() {
+            alert('Sudoku oyunu başlatılıyor...');
+        });
+
+        // Bottom navigation
+        document.querySelectorAll('.nav-item').forEach(item => {
+            item.addEventListener('click', function() {
+                const label = this.querySelector('.label').textContent;
+                alert(`${label} sayfasına geçiliyor...`);
+            });
+        });
+    </script>
+</body>
+</html>
