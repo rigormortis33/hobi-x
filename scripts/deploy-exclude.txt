@@ -9,3 +9,22 @@ npm-debug.log*
 yarn-error.log
 server/.env
 .env
+
+# Mobile development files (dev only)
+mobile/node_modules/
+HobiXMobile/node_modules/
+HobiXMobile/.expo/
+mobile/.expo/
+*.keystore
+*.p12
+*.mobileprovision
+
+# Build artifacts
+HobiXMobile/android/build/
+HobiXMobile/ios/build/
+mobile/android/build/
+mobile/ios/build/
+
+# Development notebooks
+*.ipynb
+hobi-x-mobile-demo.ipynb
