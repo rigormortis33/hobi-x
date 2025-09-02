@@ -13,6 +13,9 @@ import {
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import SudokuGame from '../components/SudokuGame';
+import WordDetectiveGame from '../components/WordDetectiveGame';
+import AnagramGame from '../components/AnagramGame';
+import KelimeMatrisiOyunu from '../components/KelimeMatrisiOyunu';
 
 /*********************************
  * Theme System
@@ -64,15 +67,19 @@ type GameItem = {
   tintFrom: string;
   tintTo: string;
   route?: string;
+  comingSoon?: boolean;
 };
 
 const GAMES: GameItem[] = [
-  { key: 'hangman', title: 'Adam Asmaca', emoji: '🪢', tintFrom: '#FFD6AE', tintTo: '#FFB77A' },
+  { key: 'hangman', title: 'Adam Asmaca', emoji: '🪢', tintFrom: '#FFD6AE', tintTo: '#FFB77A', comingSoon: true },
   { key: 'sudoku', title: 'Sudoku', emoji: '🔢', tintFrom: '#C9E8FF', tintTo: '#9FD4FF' },
-  { key: 'wordsearch', title: 'Kelime Avı', emoji: '🔍', tintFrom: '#D5F5E3', tintTo: '#A5E8CE' },
-  { key: 'memory', title: 'Eşleştirme', emoji: '🧠', tintFrom: '#E9D5FF', tintTo: '#C4B5FD' },
-  { key: '2048', title: '2048', emoji: '🎲', tintFrom: '#FFE3E3', tintTo: '#FFC6C6' },
-  { key: 'tic', title: 'X-O', emoji: '❌', tintFrom: '#FDE68A', tintTo: '#FCD34D' },
+  { key: 'wordDetective', title: 'Kelime Dedektifi', emoji: '🔍', tintFrom: '#D5F5E3', tintTo: '#A5E8CE' },
+  { key: 'anagram', title: 'Anagram', emoji: '🔀', tintFrom: '#E9D5FF', tintTo: '#C4B5FD' },
+  { key: 'wordMatrix', title: 'Kelime Matrisi', emoji: '📊', tintFrom: '#FFE3E3', tintTo: '#FFC6C6' },
+  { key: 'wordsearch', title: 'Kelime Avı', emoji: '🔎', tintFrom: '#FDE68A', tintTo: '#FCD34D', comingSoon: true },
+  { key: 'memory', title: 'Eşleştirme', emoji: '🧠', tintFrom: '#FECACA', tintTo: '#F87171', comingSoon: true },
+  { key: '2048', title: '2048', emoji: '🎲', tintFrom: '#D1FAE5', tintTo: '#A7F3D0', comingSoon: true },
+  { key: 'tic', title: 'X-O', emoji: '❌', tintFrom: '#E0E7FF', tintTo: '#C7D2FE', comingSoon: true },
 ];
 
 /*********************************
@@ -80,7 +87,7 @@ const GAMES: GameItem[] = [
  *********************************/
 export default function HobiXHomeScreen() {
   const [mode, setMode] = useState<ThemeMode>('light');
-  const [currentScreen, setCurrentScreen] = useState<'home' | 'sudoku'>('home');
+  const [currentScreen, setCurrentScreen] = useState<'home' | 'sudoku' | 'wordDetective' | 'anagram' | 'wordMatrix'>('home');
 
   useEffect(() => {
     (async () => {
@@ -103,6 +110,12 @@ export default function HobiXHomeScreen() {
     console.log('Game pressed:', gameKey);
     if (gameKey === 'sudoku') {
       setCurrentScreen('sudoku');
+    } else if (gameKey === 'wordDetective') {
+      setCurrentScreen('wordDetective');
+    } else if (gameKey === 'anagram') {
+      setCurrentScreen('anagram');
+    } else if (gameKey === 'wordMatrix') {
+      setCurrentScreen('wordMatrix');
     }
     // Add other games here
   };
@@ -116,6 +129,18 @@ export default function HobiXHomeScreen() {
   // Show game screen if selected
   if (currentScreen === 'sudoku') {
     return <SudokuGame onBack={handleBackToHome} theme={mode} />;
+  }
+
+  if (currentScreen === 'wordDetective') {
+    return <WordDetectiveGame palette={palette} onBack={handleBackToHome} />;
+  }
+
+  if (currentScreen === 'anagram') {
+    return <AnagramGame palette={palette} onBack={handleBackToHome} />;
+  }
+
+  if (currentScreen === 'wordMatrix') {
+    return <KelimeMatrisiOyunu palette={palette} onBack={handleBackToHome} />;
   }
 
   return (
@@ -255,29 +280,44 @@ function GameCard({ item, palette, onPress }: {
   };
 
   const handlePress = () => {
+    if (item.comingSoon) {
+      // Coming soon oyunları için basit bir alert göster
+      console.log('Coming soon:', item.key);
+      return;
+    }
     console.log('Open game:', item.key);
     onPress(item.key);
   };
+
+  const isComingSoon = item.comingSoon;
 
   return (
     <Animated.View style={{ transform: [{ scale }], flex: 1 }}>
       <Pressable
         onPress={handlePress}
-        onPressIn={onPressIn}
-        onPressOut={onPressOut}
+        onPressIn={isComingSoon ? undefined : onPressIn}
+        onPressOut={isComingSoon ? undefined : onPressOut}
         style={({ pressed }) => [
           styles.card,
           {
             backgroundColor: palette.card,
             borderColor: palette.stroke,
-            opacity: pressed ? 0.95 : 1,
+            opacity: isComingSoon ? 0.6 : (pressed ? 0.95 : 1),
           },
         ]}
+        disabled={isComingSoon}
       >
         <View style={[styles.cardTint, { backgroundColor: item.tintFrom }]} />
         <View style={[styles.cardTintOverlay, { backgroundColor: item.tintTo }]} />
         <Text style={styles.cardEmoji}>{item.emoji}</Text>
         <Text style={[styles.cardTitle, { color: palette.text }]}>{item.title}</Text>
+
+        {/* Yakında ibaresi */}
+        {isComingSoon && (
+          <View style={styles.comingSoonBadge}>
+            <Text style={styles.comingSoonText}>Yakında</Text>
+          </View>
+        )}
       </Pressable>
     </Animated.View>
   );
@@ -411,6 +451,21 @@ const styles = StyleSheet.create({
     right: 0,
     height: 24,
     opacity: 0.6,
+  },
+  comingSoonBadge: {
+    position: 'absolute',
+    top: 8,
+    left: 8,
+    backgroundColor: 'rgba(0,0,0,0.7)',
+    borderRadius: 8,
+    paddingHorizontal: 6,
+    paddingVertical: 2,
+  },
+  comingSoonText: {
+    color: '#FFFFFF',
+    fontSize: 10,
+    fontWeight: 'bold',
+    textTransform: 'uppercase',
   },
   bottomBar: {
     position: 'absolute',

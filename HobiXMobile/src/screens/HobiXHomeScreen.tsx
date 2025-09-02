@@ -20,6 +20,7 @@ import {
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import ApiService from '../services/ApiService';
 import HangmanGame from '../components/HangmanGame';
+import KelimeMatrisiOyunu from '../components/KelimeMatrisiOyunu';
 
 /*********************************
  * Theme System
@@ -115,6 +116,10 @@ export default function HobiXHomeScreen() {
   if (currentGame === 'hangman') {
     return <HangmanGame onBack={closeGame} theme={mode} />;
   }
+  
+  if (currentGame === 'kelimeMatrisi') {
+    return <KelimeMatrisiOyunu onBack={closeGame} palette={palette} />;
+  }
 
   return (
     <ThemeContext.Provider value={{ mode, toggle }}>
@@ -209,6 +214,7 @@ const GAMES: GameItem[] = [
   { key: 'hangman', title: 'Adam Asmaca', emoji: '🪢', tintFrom: '#FFD6AE', tintTo: '#FFB77A' },
   { key: 'sudoku', title: 'Sudoku', emoji: '🔢', tintFrom: '#C9E8FF', tintTo: '#9FD4FF' },
   { key: 'wordsearch', title: 'Kelime Avı', emoji: '🔍', tintFrom: '#D5F5E3', tintTo: '#A5E8CE' },
+  { key: 'kelimeMatrisi', title: 'Kelime Matrisi', emoji: '📊', tintFrom: '#F5E0FF', tintTo: '#E0B0FF' },
   { key: 'memory', title: 'Eşleştirme', emoji: '🧠', tintFrom: '#E9D5FF', tintTo: '#C4B5FD' },
   { key: '2048', title: '2048', emoji: '🎲', tintFrom: '#FFE3E3', tintTo: '#FFC6C6' },
   { key: 'tic', title: 'X-O', emoji: '❌', tintFrom: '#FDE68A', tintTo: '#FCD34D' },
