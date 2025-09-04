@@ -3,8 +3,8 @@ module.exports = {
     {
       name: 'hobi-x-api',
       script: 'server/app.js',
-      instances: 'max',
-      exec_mode: 'cluster',
+  instances: 1,
+  exec_mode: 'fork',
       env: {
         NODE_ENV: 'production'
       },

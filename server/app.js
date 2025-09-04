@@ -79,7 +79,14 @@ app.use((err, req, res, next) => {
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, '0.0.0.0', async () => {
   console.log(`Sunucu ${PORT} portunda çalışıyor`);
-  await testConnection();
+  try {
+    const ok = await testConnection();
+    if (!ok) {
+      console.warn('DB bağlantı testi başarısız, servis yine de ayakta.');
+    }
+  } catch (err) {
+    console.warn('DB testi hata verdi, servis yine de ayakta kalacak:', err?.message || err);
+  }
 });
 
 module.exports = app;
