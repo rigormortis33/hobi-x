@@ -29,16 +29,25 @@ rsync -avz --delete \
   "$ROOT_DIR/" "$TARGET:$REMOTE_DIR/"
 
 # Sunucuda kurulum ve PM2
-ssh -o PubkeyAuthentication=no -o PasswordAuthentication=yes "$TARGET" bash -s <<'EOSSH'
+ssh -o PubkeyAuthentication=no -o PasswordAuthentication=yes "$TARGET" bash -s <<EOSSH
 set -euo pipefail
 
 if ! command -v node >/dev/null 2>&1; then
-  curl -fsSL https://deb.nodesource.com/setup_lts.x | sudo -E bash -
-  sudo apt -y install nodejs build-essential
+  if command -v sudo >/dev/null 2>&1; then
+    curl -fsSL https://deb.nodesource.com/setup_lts.x | sudo -E bash -
+    sudo apt -y install nodejs build-essential
+  else
+    curl -fsSL https://deb.nodesource.com/setup_lts.x | bash -
+    apt -y install nodejs build-essential
+  fi
 fi
 
 if ! command -v pm2 >/dev/null 2>&1; then
-  sudo npm i -g pm2
+  if command -v sudo >/dev/null 2>&1; then
+    sudo npm i -g pm2
+  else
+    npm i -g pm2
+  fi
 fi
 
 cd "$REMOTE_DIR"
