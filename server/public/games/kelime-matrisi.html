@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kelime Matrisi - Hobi-X</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .back-btn {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            margin-bottom: 20px;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .game-container {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 30px;
+            backdrop-filter: blur(10px);
+        }
+
+        .game-info {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .score {
+            font-size: 1.5em;
+            margin-bottom: 10px;
+        }
+
+        .grid {
+            display: grid;
+            gap: 2px;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 10px;
+            border-radius: 10px;
+            margin: 20px auto;
+            max-width: 600px;
+            width: 100%;
+        }
+
+        .cell {
+            width: 35px;
+            height: 35px;
+            background: rgba(255, 255, 255, 0.9);
+            color: #333;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.2em;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: all 0.2s ease;
+            user-select: none;
+        }
+
+        .cell:hover {
+            background: rgba(255, 255, 255, 1);
+            transform: scale(1.1);
+        }
+
+        .cell.selected {
+            background: #4CAF50;
+            color: white;
+            box-shadow: 0 0 10px rgba(76, 175, 80, 0.5);
+        }        .word-input {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .word-display {
+            font-size: 1.5em;
+            font-weight: bold;
+            margin-bottom: 10px;
+            min-height: 40px;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            word-break: break-all;
+        }
+
+        .input-group {
+            display: flex;
+            gap: 10px;
+            max-width: 500px;
+            margin: 0 auto;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .word-input-field {
+            flex: 1;
+            padding: 12px 15px;
+            border: none;
+            border-radius: 25px;
+            font-size: 1.1em;
+            text-align: center;
+            text-transform: uppercase;
+            background: rgba(255, 255, 255, 0.9);
+            color: #333;
+            font-weight: bold;
+            min-width: 200px;
+        }
+
+        .submit-btn {
+            background: linear-gradient(45deg, #4CAF50, #45a049);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .submit-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(76, 175, 80, 0.3);
+        }
+
+        .clear-btn {
+            background: #ff9800;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.9em;
+            margin-left: 5px;
+        }
+
+        .submit-btn:hover {
+            transform: scale(1.05);
+        }
+
+        .found-words {
+            margin-top: 30px;
+        }
+
+        .found-words h3 {
+            text-align: center;
+            margin-bottom: 15px;
+        }
+
+        .words-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+        }
+
+        .word-item {
+            background: rgba(76, 175, 80, 0.2);
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9em;
+        }
+
+        .message {
+            text-align: center;
+            margin: 20px 0;
+            padding: 15px;
+            border-radius: 10px;
+            font-weight: bold;
+        }
+
+        .success {
+            background: rgba(76, 175, 80, 0.3);
+        }
+
+        .error {
+            background: rgba(244, 67, 54, 0.3);
+        }
+
+        .new-game-btn {
+            background: linear-gradient(45deg, #2196F3, #21CBF3);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 25px;
+            font-size: 1em;
+            font-weight: bold;
+            cursor: pointer;
+            margin: 20px auto;
+            display: block;
+            transition: all 0.3s ease;
+        }
+
+        .new-game-btn:hover {
+            transform: scale(1.05);
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+
+            .header h1 {
+                font-size: 2em;
+            }
+
+            .grid {
+                max-width: 100%;
+                padding: 5px;
+                gap: 1px;
+            }
+
+            .cell {
+                width: 25px;
+                height: 25px;
+                font-size: 0.9em;
+            }
+
+            .cell:hover {
+                transform: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <a href="/" class="back-btn">← Ana Sayfa</a>
+            <h1>🧩 Kelime Matrisi</h1>
+        </header>
+
+        <div class="game-container">
+            <div class="game-info">
+                <div class="score">Puan: <span id="score">0</span></div>
+                <div>Kalan Süre: <span id="time">180</span> saniye</div>
+            </div>
+
+            <div class="grid" id="gameGrid">
+                <!-- 4x4 grid buraya gelecek -->
+            </div>
+
+            <div class="word-input">
+                <div class="word-display" id="currentWord"></div>
+                <div class="input-group">
+                    <input type="text" class="word-input-field" id="wordInput" placeholder="Kelimeyi yazın veya harfleri tıklayın" maxlength="20">
+                    <button class="submit-btn" onclick="submitWord()">Gönder</button>
+                    <button class="clear-btn" onclick="clearSelection()">Temizle</button>
+                </div>
+            </div>
+
+            <div class="message" id="message" style="display: none;"></div>
+
+            <button class="new-game-btn" onclick="newGame()">Yeni Oyun</button>
+
+            <div class="found-words">
+                <h3>Bulunan Kelimeler</h3>
+                <div class="words-list" id="foundWords">
+                    <!-- Bulunan kelimeler buraya gelecek -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let gameData = null;
+        let selectedCells = [];
+        let foundWords = [];
+        let score = 0;
+        let timeLeft = 180;
+        let timer = null;
+        let isSelecting = false;
+        let lastSelectedCell = null;
+
+        // Sayfa yüklendiğinde oyunu başlat
+        document.addEventListener('DOMContentLoaded', function() {
+            newGame();
+        });
+
+        // Yeni oyun başlat
+        async function newGame() {
+            try {
+                const response = await fetch('/api/v1/games/kelime-matrisi/generate');
+                const data = await response.json();
+
+                if (data.success) {
+                    gameData = data;
+                    initializeGame(data.grid);
+                    resetGame();
+                } else {
+                    showMessage('Oyun yüklenirken hata oluştu!', 'error');
+                }
+            } catch (error) {
+                showMessage('Sunucuya bağlanılamadı!', 'error');
+            }
+        }
+
+        // Oyunu başlat
+        function initializeGame(grid) {
+            const gameGrid = document.getElementById('gameGrid');
+            gameGrid.innerHTML = '';
+
+            // Grid boyutunu belirle (API'den gelen grid'e göre)
+            const gridSize = grid.length;
+
+            for (let i = 0; i < gridSize; i++) {
+                for (let j = 0; j < gridSize; j++) {
+                    const cell = document.createElement('div');
+                    cell.className = 'cell';
+                    cell.textContent = grid[i][j];
+                    cell.dataset.row = i;
+                    cell.dataset.col = j;
+
+                    // Mouse event'leri
+                    cell.onmousedown = () => handleMouseDown(cell);
+                    cell.onmouseenter = () => handleMouseEnter(cell);
+                    cell.onmouseup = () => handleMouseUp();
+
+                    // Dokunmatik cihazlar için
+                    cell.ontouchstart = (e) => {
+                        e.preventDefault();
+                        handleMouseDown(cell);
+                    };
+                    cell.ontouchmove = (e) => {
+                        e.preventDefault();
+                        const touch = e.touches[0];
+                        const element = document.elementFromPoint(touch.clientX, touch.clientY);
+                        if (element && element.classList.contains('cell')) {
+                            handleMouseEnter(element);
+                        }
+                    };
+                    cell.ontouchend = (e) => {
+                        e.preventDefault();
+                        handleMouseUp();
+                    };
+
+                    gameGrid.appendChild(cell);
+                }
+            }
+
+            // Grid CSS'ini dinamik olarak ayarla
+            gameGrid.style.gridTemplateColumns = `repeat(${gridSize}, 1fr)`;
+            gameGrid.style.maxWidth = `${Math.min(gridSize * 40, 600)}px`;
+        }
+
+        // Hücre seçimi - tıklama ve sürükleme
+        function selectCell(cell) {
+            if (!isSelecting) {
+                // İlk tıklama - yeni seçim başlat
+                clearSelection();
+                isSelecting = true;
+                lastSelectedCell = cell;
+                cell.classList.add('selected');
+                selectedCells.push(cell);
+            } else {
+                // Sürükleme devam ediyor
+                if (!cell.classList.contains('selected')) {
+                    // Komşu hücre mi kontrol et
+                    if (isAdjacent(lastSelectedCell, cell)) {
+                        cell.classList.add('selected');
+                        selectedCells.push(cell);
+                        lastSelectedCell = cell;
+                    }
+                }
+            }
+            updateCurrentWord();
+        }
+
+        // Hücrelerin komşu olup olmadığını kontrol et
+        function isAdjacent(cell1, cell2) {
+            const row1 = parseInt(cell1.dataset.row);
+            const col1 = parseInt(cell1.dataset.col);
+            const row2 = parseInt(cell2.dataset.row);
+            const col2 = parseInt(cell2.dataset.col);
+
+            const rowDiff = Math.abs(row1 - row2);
+            const colDiff = Math.abs(col1 - col2);
+
+            // Komşu: aynı satırda yan yana veya aynı sütunda üst üste
+            return (rowDiff === 0 && colDiff === 1) || (rowDiff === 1 && colDiff === 0);
+        }
+
+        // Mouse event'leri
+        function handleMouseDown(cell) {
+            isSelecting = true;
+            lastSelectedCell = cell;
+            clearSelection();
+            cell.classList.add('selected');
+            selectedCells.push(cell);
+            updateCurrentWord();
+        }
+
+        function handleMouseEnter(cell) {
+            if (isSelecting && !cell.classList.contains('selected')) {
+                if (isAdjacent(lastSelectedCell, cell)) {
+                    cell.classList.add('selected');
+                    selectedCells.push(cell);
+                    lastSelectedCell = cell;
+                    updateCurrentWord();
+                }
+            }
+        }
+
+        function handleMouseUp() {
+            isSelecting = false;
+        }
+
+        // Seçili kelimeyi güncelle
+        function updateCurrentWord() {
+            const word = selectedCells.map(cell => cell.textContent).join('');
+            document.getElementById('currentWord').textContent = word || 'Harfleri seçin...';
+            document.getElementById('wordInput').value = word;
+        }
+
+        // Kelimeyi gönder
+        function submitWord() {
+            let word = '';
+
+            // Önce input'tan al
+            const inputValue = document.getElementById('wordInput').value.trim().toUpperCase();
+            if (inputValue && inputValue !== '') {
+                word = inputValue;
+            } else {
+                // Input boşsa currentWord'dan al
+                const currentWord = document.getElementById('currentWord').textContent.trim();
+                if (currentWord && currentWord !== 'Harfleri seçin...') {
+                    word = currentWord;
+                }
+            }
+
+            if (!word || word.length < 3) {
+                showMessage('Kelime en az 3 harf olmalı!', 'error');
+                return;
+            }
+
+            console.log('Gönderilen kelime:', word); // Debug için
+            checkWord(word);
+        }
+
+        // Kelimeyi kontrol et
+        async function checkWord(word) {
+            if (!gameData || !gameData.sessionId) {
+                showMessage('Oyun başlatılmamış!', 'error');
+                return;
+            }
+
+            try {
+                const response = await fetch('/api/v1/games/kelime-matrisi/check', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        word: word,
+                        sessionId: gameData.sessionId,
+                        positions: selectedCells.map(cell => ({
+                            row: parseInt(cell.dataset.row),
+                            col: parseInt(cell.dataset.col)
+                        }))
+                    })
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                const data = await response.json();
+                console.log('API yanıtı:', data); // Debug için
+
+                if (data.success && data.correct) {
+                    // Doğru kelime
+                    const points = word.length * 10;
+                    score += points;
+                    foundWords.push(word);
+                    updateScore();
+                    updateFoundWords();
+                    clearSelection();
+                    showMessage(`✅ ${word} bulundu! (+${points} puan)`, 'success');
+                } else {
+                    // Yanlış kelime
+                    showMessage(data.message || '❌ Bu kelime bulunamadı!', 'error');
+                }
+            } catch (error) {
+                console.error('Kelime kontrol hatası:', error);
+                showMessage('Kelime kontrol edilemedi: ' + error.message, 'error');
+            }
+        }
+
+        // Seçimi temizle
+        function clearSelection() {
+            // Seçili hücreleri temizle
+            selectedCells.forEach(cell => {
+                if (cell) {
+                    cell.classList.remove('selected');
+                }
+            });
+            selectedCells = [];
+
+            // Input alanlarını temizle
+            const wordInput = document.getElementById('wordInput');
+            const currentWord = document.getElementById('currentWord');
+
+            if (wordInput) wordInput.value = '';
+            if (currentWord) currentWord.textContent = 'Harfleri seçin...';
+
+            console.log('Seçim temizlendi'); // Debug için
+        }
+
+        // Puanı güncelle
+        function updateScore() {
+            document.getElementById('score').textContent = score;
+        }
+
+        // Bulunan kelimeleri güncelle
+        function updateFoundWords() {
+            const wordsList = document.getElementById('foundWords');
+            wordsList.innerHTML = foundWords.map(word =>
+                `<span class="word-item">${word}</span>`
+            ).join('');
+        }
+
+        // Mesaj göster
+        function showMessage(text, type) {
+            const message = document.getElementById('message');
+            message.textContent = text;
+            message.className = `message ${type}`;
+            message.style.display = 'block';
+
+            setTimeout(() => {
+                message.style.display = 'none';
+            }, 3000);
+        }
+
+        // Oyunu sıfırla
+        function resetGame() {
+            selectedCells = [];
+            foundWords = [];
+            score = 0;
+            timeLeft = 180;
+
+            updateScore();
+            updateFoundWords();
+            clearSelection();
+
+            // Timer'ı başlat
+            if (timer) clearInterval(timer);
+            timer = setInterval(() => {
+                timeLeft--;
+                document.getElementById('time').textContent = timeLeft;
+
+                if (timeLeft <= 0) {
+                    clearInterval(timer);
+                    showMessage('⏰ Süre bitti! Oyun sona erdi.', 'error');
+                }
+            }, 1000);
+        }
+
+        // Input alanındaki değişiklikleri dinle
+        document.getElementById('wordInput').addEventListener('input', function(e) {
+            const word = e.target.value.toUpperCase();
+            const currentWord = document.getElementById('currentWord');
+
+            if (currentWord) {
+                currentWord.textContent = word || 'Harfleri seçin...';
+            }
+
+            // Seçili hücreleri temizle (manuel giriş yapılıyorsa)
+            if (word && selectedCells.length > 0) {
+                clearSelection();
+            }
+        });
+
+        // Enter tuşu ile kelime gönder
+        document.getElementById('wordInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                e.preventDefault(); // Form submit'ini engelle
+                submitWord();
+            }
+        });
+
+        // Button event listener'larını da ekleyelim
+        document.querySelector('.submit-btn').addEventListener('click', function(e) {
+            e.preventDefault();
+            submitWord();
+        });
+
+        document.querySelector('.clear-btn').addEventListener('click', function(e) {
+            e.preventDefault();
+            clearSelection();
+        });
+
+        document.querySelector('.new-game-btn').addEventListener('click', function(e) {
+            e.preventDefault();
+            newGame();
+        });
+    </script>
+</body>
+</html>

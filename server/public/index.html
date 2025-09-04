@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hobi-X - Türkçe Oyunlar</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 40px 0;
+        }
+
+        .header h1 {
+            font-size: 3em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        .games-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .game-card {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 30px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .game-card:hover {
+            transform: translateY(-10px);
+            background: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+        }
+
+        .game-icon {
+            font-size: 4em;
+            margin-bottom: 20px;
+            display: block;
+        }
+
+        .game-card h3 {
+            font-size: 1.5em;
+            margin-bottom: 15px;
+        }
+
+        .game-card p {
+            opacity: 0.8;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+
+        .play-btn {
+            background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            font-size: 1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .play-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(255, 107, 107, 0.4);
+        }
+
+        .features {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 30px;
+            margin-top: 40px;
+            backdrop-filter: blur(10px);
+        }
+
+        .features h2 {
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2em;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .feature-item {
+            text-align: center;
+            padding: 20px;
+        }
+
+        .feature-item .icon {
+            font-size: 2.5em;
+            margin-bottom: 15px;
+            display: block;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            padding: 20px;
+            opacity: 0.7;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2em;
+            }
+
+            .games-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .game-card {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>🎮 Hobi-X</h1>
+            <p>Türkçe Kelime ve Bulmaca Oyunları</p>
+        </header>
+
+        <main>
+            <section class="games-grid">
+                <div class="game-card" onclick="window.location.href='/games/kelime-matrisi'">
+                    <span class="game-icon">🧩</span>
+                    <h3>Kelime Matrisi</h3>
+                    <p>4x4 harf matrisinde gizli kelimeleri bulun. Türkçe kelime dağarcığınızı test edin!</p>
+                    <a href="/games/kelime-matrisi" class="play-btn">Oyna 🎯</a>
+                </div>
+
+                <div class="game-card" onclick="window.location.href='/games/sudoku'">
+                    <span class="game-icon">🔢</span>
+                    <h3>Sudoku</h3>
+                    <p>Klasik sayı bulmacası. Mantık ve strateji ile 9x9'luk grid'i doldurun.</p>
+                    <a href="/games/sudoku" class="play-btn">Oyna 🎯</a>
+                </div>
+
+                <div class="game-card" onclick="window.location.href='/games/hangman'">
+                    <span class="game-icon">👻</span>
+                    <h3>Adam Asmaca</h3>
+                    <p>Türkçe kelimelerle klasik Adam Asmaca oyunu. 6 yanlış hakkınız var!</p>
+                    <a href="/games/hangman" class="play-btn">Oyna 🎯</a>
+                </div>
+
+                <div class="game-card" onclick="window.location.href='/games/anagram'">
+                    <span class="game-icon">🔀</span>
+                    <h3>Anagram</h3>
+                    <p>Karışık harfleri doğru kelimeye dönüştürün. Kelime bilginizi gösterin!</p>
+                    <a href="/games/anagram" class="play-btn">Oyna 🎯</a>
+                </div>
+
+                <div class="game-card" onclick="window.location.href='/games/kelime-dedektifi'">
+                    <span class="game-icon">🕵️</span>
+                    <h3>Kelime Dedektifi</h3>
+                    <p>Gizli kelimeyi ipuçları ile bulun. Detektiflik yeteneklerinizi test edin!</p>
+                    <a href="/games/kelime-dedektifi" class="play-btn">Oyna 🎯</a>
+                </div>
+            </section>
+
+            <section class="features">
+                <h2>✨ Özellikler</h2>
+                <div class="features-grid">
+                    <div class="feature-item">
+                        <span class="icon">🇹🇷</span>
+                        <h4>Tamamen Türkçe</h4>
+                        <p>Türkçe kelime ve oyun içeriği</p>
+                    </div>
+                    <div class="feature-item">
+                        <span class="icon">📱</span>
+                        <h4>Mobil Uyumlu</h4>
+                        <p>Telefon ve tablette oynayabilirsiniz</p>
+                    </div>
+                    <div class="feature-item">
+                        <span class="icon">🎯</span>
+                        <h4>Çeşitli Zorluk</h4>
+                        <p>Başlangıçtan ileri seviyeye</p>
+                    </div>
+                    <div class="feature-item">
+                        <span class="icon">⚡</span>
+                        <h4>Hızlı Yükleme</h4>
+                        <p>Optimizeli ve hızlı oyun deneyimi</p>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer class="footer">
+            <p>&copy; 2025 Hobi-X - Türkçe Oyunlar Platformu</p>
+        </footer>
+    </div>
+
+    <script>
+        // Sayfa yüklendiğinde animasyon efekti
+        document.addEventListener('DOMContentLoaded', function() {
+            const cards = document.querySelectorAll('.game-card');
+            cards.forEach((card, index) => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(30px)';
+
+                setTimeout(() => {
+                    card.style.transition = 'all 0.6s ease';
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0)';
+                }, index * 100);
+            });
+        });
+
+        // Oyun kartlarına hover efekti
+        document.querySelectorAll('.game-card').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-10px) scale(1.02)';
+            });
+
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0) scale(1)';
+            });
+        });
+    </script>
+</body>
+</html>

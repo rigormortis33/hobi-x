@@ -1,0 +1,281 @@
+{
+  "metadata": {
+    "totalWords": 198,
+    "totalCategories": 36,
+    "exportDate": "2025-09-04T21:35:19.793Z",
+    "source": "database",
+    "lastSync": "2025-09-04T21:35:55.006Z"
+  },
+  "categories": {
+    "Aile": [
+      "ANNE",
+      "BABA"
+    ],
+    "Bilgisayar": [
+      "ALGORİTMA"
+    ],
+    "Bilim": [
+      "FELSEFE"
+    ],
+    "Bitki": [
+      "ÇİMEN",
+      "FİDAN",
+      "KAKTÜS",
+      "YOSUN"
+    ],
+    "Biyoloji": [
+      "BİYOTEKNOLOJİ",
+      "DNA",
+      "KROMOZOM",
+      "MİTOKONDRİ",
+      "NÖRON",
+      "RNA"
+    ],
+    "Çiçek": [
+      "GÜL",
+      "GÜNEBAKAN",
+      "LALE",
+      "MENEKŞE",
+      "ORKİDE",
+      "PAPATYA",
+      "ZAMBAK"
+    ],
+    "Coğrafya": [
+      "ÇÖL",
+      "DAĞ",
+      "KITA",
+      "NEHİR",
+      "OKYANUS",
+      "ORMAN"
+    ],
+    "Doğa": [
+      "AĞAÇ",
+      "ATEŞ",
+      "ÇİÇEK",
+      "DENİZ",
+      "GÖK",
+      "GÖL",
+      "GÜNEŞ",
+      "KIR",
+      "KUŞ",
+      "SU"
+    ],
+    "doga": [
+      "GÖLGE",
+      "ŞELALE",
+      "VOLKAN"
+    ],
+    "Duygu": [
+      "HEYECAN",
+      "HÜZÜN",
+      "KORKU",
+      "NEŞE",
+      "ÖFKE",
+      "SEVGİ",
+      "SEVİNÇ",
+      "ÜZÜNTÜ"
+    ],
+    "Eğitim": [
+      "KİTAP",
+      "OKUL",
+      "ÜNİVERSİTE"
+    ],
+    "Ekonomi": [
+      "BORÇ",
+      "BÜTÇE",
+      "EKONOMİ",
+      "FİNANS",
+      "KAR",
+      "VERGİ",
+      "YATIRIM"
+    ],
+    "Ev": [
+      "AVİZE",
+      "BUZDOLABI",
+      "ÇAMAŞIR",
+      "ÇARŞAF",
+      "DOLAP",
+      "HALI",
+      "KAPI",
+      "KOLTUK",
+      "MAS",
+      "PENCERE",
+      "PERDE",
+      "SANDALYE",
+      "YASTIK",
+      "YORGAN"
+    ],
+    "Fizik": [
+      "ELEKTROMANYETİK",
+      "FOTOELEKTRİK",
+      "KUANTUM",
+      "TERMODİNAMİK"
+    ],
+    "genel": [
+      "İSTATİSTİK",
+      "ALGORITMA",
+      "BILGISAYAR",
+      "SOĞAN"
+    ],
+    "Geometri": [
+      "HEKSAGON",
+      "OKTAGON",
+      "PARALELKENAR",
+      "PENTAGON"
+    ],
+    "Hayvan": [
+      "KEDİ",
+      "KÖPEK"
+    ],
+    "İçecek": [
+      "ÇAY",
+      "SÜT"
+    ],
+    "İş": [
+      "LOJİSTİK",
+      "MARKETİNG",
+      "STRATEJİ"
+    ],
+    "Matematik": [
+      "ALGEBRA",
+      "GEOMETRİ",
+      "KALKÜLÜS",
+      "STATİSTİK",
+      "TRİGONOMETRİ"
+    ],
+    "Meslek": [
+      "AŞÇI",
+      "AVUKAT",
+      "ÇİFTÇİ",
+      "DOKTOR",
+      "GARSON",
+      "İTFATİYE",
+      "KUAFÖR",
+      "MÜHENDİS",
+      "ÖĞRETMEN",
+      "POLİS"
+    ],
+    "Meyve": [
+      "ARMUT",
+      "ÇİLEK",
+      "ELMA",
+      "KARPUZ",
+      "KAVUN",
+      "PORTAKAL",
+      "ÜZÜM"
+    ],
+    "Müzik": [
+      "KONÇERTO",
+      "SENFONİ"
+    ],
+    "Ölçü": [
+      "KİLOGRAM",
+      "LİTRE",
+      "METRE"
+    ],
+    "Özellik": [
+      "AKILLI",
+      "ÇİRKİN",
+      "GÜÇLÜ",
+      "GÜZEL",
+      "HIZLI",
+      "SAKIN",
+      "YAVAŞ",
+      "ZAYIF"
+    ],
+    "Renk": [
+      "BEYAZ",
+      "GRİ",
+      "KIRMIZI",
+      "MAVİ",
+      "MOR",
+      "PEMBE",
+      "SARI",
+      "SİYAH",
+      "TURUNCU",
+      "YEŞİL"
+    ],
+    "Sanat": [
+      "BALE",
+      "HEYKEL",
+      "MÜZİK",
+      "OPERA",
+      "RESİM",
+      "SİNEMA",
+      "TİYATRO"
+    ],
+    "Sebze": [
+      "BİBER",
+      "BROKOLİ",
+      "DOMATES",
+      "HAVUÇ",
+      "ISPANAK",
+      "KABAK",
+      "MARUL",
+      "PATATES",
+      "PATLICAN",
+      "SALATALIK",
+      "SARIMSAK",
+      "SOGAN"
+    ],
+    "Spor": [
+      "BASKETBOL",
+      "FUTBOL",
+      "GİMNASTİK",
+      "JİMNASTİK",
+      "KOŞU",
+      "PİLATES",
+      "TENİS",
+      "VOLEYBOL",
+      "YOGA",
+      "YÜZME"
+    ],
+    "Tarih": [
+      "ANTİK",
+      "ORTAÇAĞ",
+      "RENESANS",
+      "SANAYİ"
+    ],
+    "Taşıt": [
+      "ARABA"
+    ],
+    "Teknoloji": [
+      "BİLGİSAYAR",
+      "MİKRODENETLEYİCİ",
+      "NANOTEKNOLOJİ",
+      "ROBOT",
+      "TELEFON",
+      "YAZILIM"
+    ],
+    "Ulaşım": [
+      "BİSİKLET",
+      "GEMİ",
+      "HELİKOPTER",
+      "METRO",
+      "MOTOR",
+      "OTOBÜS",
+      "TAKSİ",
+      "TREN",
+      "UÇAK",
+      "VAPUR"
+    ],
+    "Yaşam": [
+      "EV",
+      "YOL"
+    ],
+    "Yiyecek": [
+      "EKMEK",
+      "PEYNİR",
+      "YUMURTA"
+    ],
+    "Zaman": [
+      "AY",
+      "DAKİKA",
+      "GÜN",
+      "HAFTA",
+      "SAAT",
+      "SANİYE",
+      "YIL"
+    ]
+  }
+}

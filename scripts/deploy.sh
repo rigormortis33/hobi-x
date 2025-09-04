@@ -2,7 +2,7 @@
 set -euo pipefail
 
 # Kullanım: scripts/deploy.sh <ssh_user>@<host> [remote_dir]
-# Ör: scripts/deploy.sh ubuntu@72.60.36.213 /home/ubuntu/apps/Hobi-X
+# Ör: scripts/deploy.sh root@72.60.36.213 /root/apps/Hobi-X
 
 if [ ${#} -lt 1 ]; then
   echo "Kullanim: $0 <ssh_user>@<host> [remote_dir]" >&2
@@ -10,21 +10,26 @@ if [ ${#} -lt 1 ]; then
 fi
 
 TARGET=$1
-REMOTE_DIR=${2:-/home/$(echo "$TARGET" | cut -d@ -f1)/apps/Hobi-X}
+USER=$(echo "$TARGET" | cut -d@ -f1)
+REMOTE_DIR=${2:-/root/apps/Hobi-X}
+if [ "$USER" != "root" ]; then
+  REMOTE_DIR=${2:-/home/$USER/apps/Hobi-X}
+fi
 
 SCRIPT_DIR=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &>/dev/null && pwd)
 ROOT_DIR=$(dirname "$SCRIPT_DIR")
 
 # Sunucuda klasörleri hazırla
-ssh -o StrictHostKeyChecking=accept-new "$TARGET" "mkdir -p '$REMOTE_DIR' '$REMOTE_DIR/logs'"
+ssh -v -o StrictHostKeyChecking=accept-new -o PubkeyAuthentication=no -o PasswordAuthentication=yes "$TARGET" "mkdir -p '$REMOTE_DIR' '$REMOTE_DIR/logs'"
 
 # Kodları rsync ile aktar (env hariç)
-rsync -az --delete \
+rsync -avz --delete \
   --exclude-from="$SCRIPT_DIR/deploy-exclude.txt" \
+  -e "ssh -o PubkeyAuthentication=no -o PasswordAuthentication=yes" \
   "$ROOT_DIR/" "$TARGET:$REMOTE_DIR/"
 
 # Sunucuda kurulum ve PM2
-ssh "$TARGET" bash -s <<'EOSSH'
+ssh -o PubkeyAuthentication=no -o PasswordAuthentication=yes "$TARGET" bash -s <<'EOSSH'
 set -euo pipefail
 
 if ! command -v node >/dev/null 2>&1; then

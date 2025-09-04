@@ -96,11 +96,54 @@ async function insertSampleData() {
     // Adam Asmaca oyununu ekle
     `INSERT INTO game_types (id, name, description, icon, settings)
      VALUES ('hangman', 'Adam Asmaca', 'Kelimeyi tahmin etmeye çalışın!', 'hangman_icon.png', 
-       '{"maxAttempts": 6, "difficultyLevels": ["kolay", "normal", "zor"]}')
+       '{"maxAttempts": 6, "difficultyLevels": ["kolay", "normal", "zor"]}'),
+     ('kelime_matrisi', 'Kelime Matrisi', '4x4 matriste kelimeler bulun!', 'kelime_matrisi_icon.png',
+       '{"gridSize": 4, "categories": ["temel", "doga", "esya", "yemek", "aile", "soyut"], "difficultyLevels": ["kolay", "orta", "zor"]}'),
+     ('sudoku', 'Sudoku', 'Rakamları doğru yerlere yerleştirin!', 'sudoku_icon.png',
+       '{"gridSize": 9, "difficultyLevels": ["kolay", "orta", "zor"], "maxMistakes": 3}'),
+     ('kelime_dedektifi', 'Kelime Dedektifi', 'İpucu ile kelimeyi bulun!', 'kelime_dedektifi_icon.png',
+       '{"maxLives": 6, "difficultyLevels": ["kolay", "orta", "zor"]}'),
+     ('anagram', 'Anagram', 'Harfleri yeniden düzenleyin!', 'anagram_icon.png',
+       '{"difficultyLevels": ["kolay", "orta", "zor"]}')
      ON DUPLICATE KEY UPDATE
-       name = VALUES(name), description = VALUES(description)`,
+       name = VALUES(name), description = VALUES(description), settings = VALUES(settings)`,
 
-    // Örnek kelimeler
+    // Kelime matrisi için kelime tablosu
+    `CREATE TABLE IF NOT EXISTS kelime_matrisi_words (
+      id INT AUTO_INCREMENT PRIMARY KEY,
+      word VARCHAR(20) NOT NULL,
+      category VARCHAR(50),
+      difficulty VARCHAR(20) DEFAULT 'orta',
+      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_turkish_ci`,
+
+    // Sudoku için puzzle tablosu
+    `CREATE TABLE IF NOT EXISTS sudoku_puzzles (
+      id INT AUTO_INCREMENT PRIMARY KEY,
+      puzzle_data JSON NOT NULL,
+      solution_data JSON NOT NULL,
+      difficulty VARCHAR(20) DEFAULT 'orta',
+      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_turkish_ci`,
+
+    // Kelime dedektifi için kelime tablosu
+    `CREATE TABLE IF NOT EXISTS kelime_dedektifi_words (
+      id INT AUTO_INCREMENT PRIMARY KEY,
+      word VARCHAR(50) NOT NULL,
+      clue TEXT NOT NULL,
+      difficulty VARCHAR(20) DEFAULT 'orta',
+      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_turkish_ci`,
+
+    // Anagram için kelime tablosu
+    `CREATE TABLE IF NOT EXISTS anagram_words (
+      id INT AUTO_INCREMENT PRIMARY KEY,
+      word VARCHAR(50) NOT NULL,
+      difficulty VARCHAR(20) DEFAULT 'orta',
+      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_turkish_ci`,
+
+        // Örnek kelimeler
     `INSERT IGNORE INTO hangman_words (word, category, difficulty) VALUES
      ('KALEM', 'Okul', 'kolay'),
      ('KİTAP', 'Okul', 'kolay'),
@@ -112,6 +155,45 @@ async function insertSampleData() {
      ('MİKRODENETLEYİCİ', 'Teknoloji', 'zor'),
      ('DÜZGÜNALTIGEN', 'Matematik', 'zor'),
      ('ALGORİTMA', 'Teknoloji', 'zor')`,
+
+    // Kelime matrisi örnek kelimeler
+    `INSERT IGNORE INTO kelime_matrisi_words (word, category, difficulty) VALUES
+     ('ELMA', 'yemek', 'kolay'),
+     ('ARABA', 'esya', 'kolay'),
+     ('DENIZ', 'doga', 'kolay'),
+     ('GÜNEŞ', 'doga', 'kolay'),
+     ('KİTAP', 'esya', 'kolay'),
+     ('BİLGİSAYAR', 'esya', 'orta'),
+     ('TELEFON', 'esya', 'orta'),
+     ('ÇİÇEK', 'doga', 'orta'),
+     ('AĞAÇ', 'doga', 'orta'),
+     ('OKUL', 'esya', 'orta')`,
+
+    // Kelime dedektifi örnek kelimeler
+    `INSERT IGNORE INTO kelime_dedektifi_words (word, clue, difficulty) VALUES
+     ('ELMA', 'Kırmızı veya yeşil, ağaçta yetişir.', 'kolay'),
+     ('BİLGİSAYAR', 'Kod yazmak için kullanılır.', 'orta'),
+     ('KİTAP', 'Okumak için sayfaları çevirirsin.', 'kolay'),
+     ('ARABA', 'Tekerlekli, motorlu ulaşım aracı.', 'kolay'),
+     ('KEDİ', 'Evcil, miyavlayan hayvan.', 'kolay'),
+     ('OKUL', 'Eğitim alınan yer.', 'kolay'),
+     ('MÜZİK', 'Dinlenir, notalarla yazılır.', 'orta'),
+     ('DENİZ', 'Mavi, tuzlu, yüzülür.', 'kolay'),
+     ('GÜNEŞ', 'Dünyayı ısıtır, yıldızdır.', 'kolay'),
+     ('ÇİÇEK', 'Renkli, güzel kokar.', 'kolay')`,
+
+    // Anagram örnek kelimeler
+    `INSERT IGNORE INTO anagram_words (word, difficulty) VALUES
+     ('elma', 'kolay'),
+     ('masa', 'kolay'),
+     ('araba', 'kolay'),
+     ('kalem', 'kolay'),
+     ('kitap', 'kolay'),
+     ('oyuncak', 'orta'),
+     ('bilgisayar', 'zor'),
+     ('telefon', 'orta'),
+     ('kedi', 'kolay'),
+     ('köpek', 'kolay')`,
 
     // Admin kullanıcısı oluştur (şifre: admin123)
     `INSERT INTO users (username, email, password, full_name, is_admin)

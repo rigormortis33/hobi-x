@@ -1,4 +1,86 @@
-# Hobi-X Bulmaca Oyunları Platformu
+# Hobi-X
+
+Hobi-X, Türkçe kelime ve bulmaca oyunlarını bir araya getiren mobil uygulama platformudur. Uygulama içerisinde çeşitli kelime oyunları ve bulmacalar sunarak kullanıcılara eğlenceli ve eğitici bir deneyim sunar.
+
+## 📱 Oyunlar
+
+- **Kelime Matrisi**: 4x4 harf matrisinde kelimeler bulma oyunu
+- **Sudoku**: Klasik sayı bulmaca oyunu
+- **Kelime Dedektifi**: Karışık harfler içinden kelime bulma
+- **Anagram**: Harfleri yeniden düzenleyerek kelime oluşturma oyunu
+
+*Yakında Gelecek:*
+- Adam Asmaca
+- Kelime Avı
+- Eşleştirme
+- 2048
+- X-O (Tic-tac-toe)
+
+## 🚀 Başlarken
+
+### Gereksinimler
+
+- Node.js (v14.0.0 veya üstü)
+- npm veya yarn
+- React Native CLI
+- Android Studio veya Xcode (geliştirme için)
+- Expo CLI
+
+### Kurulum
+
+```bash
+# Depoyu klonlayın
+git clone https://github.com/rigormortis33/hobi-x.git
+
+# Proje dizinine gidin
+cd hobi-x
+
+# Bağımlılıkları yükleyin
+npm install
+
+# Mobil uygulama klasörüne gidin
+cd HobiXMobile
+
+# Mobil bağımlılıkları yükleyin
+npm install
+
+# Uygulamayı başlatın
+npm start
+```
+
+## 📦 Proje Yapısı
+
+```
+hobi-x/
+├── HobiXMobile/           # Ana React Native mobil uygulama
+│   ├── src/
+│   │   ├── components/    # Oyun bileşenleri
+│   │   ├── screens/       # Ana ekranlar
+│   │   ├── services/      # API servisleri
+│   │   └── types/         # TypeScript tipleri
+│   ├── App.tsx            # Ana uygulama bileşeni
+│   └── ...
+├── mobile/                # Alternatif/eski mobil uygulama
+├── server/                # Node.js backend API
+├── docs/                  # Dokümantasyon
+└── scripts/               # Deployment ve yardımcı scriptler
+```
+
+## 🧪 Kullanılan Teknolojiler
+
+- React Native
+- TypeScript
+- Expo
+- AsyncStorage
+- Node.js (Backend)
+
+## 🎮 Özellikler
+
+- Light/Dark tema desteği
+- Kategori ve zorluk seviyesi seçenekleri
+- Yüksek skor kaydetme
+- İpucu sistemi
+- Seviye atlama sistemi Bulmaca Oyunları Platformu
 
 Hobi-X, Türkçe karakterleri tam destekleyen, modüler yapıda, kolayca oyun ekleyip çıkarılabilen bir bulmaca oyunları platformudur. Bu proje hem backend API hem de modern React Native mobil uygulamasını içerir.
 

@@ -24,7 +24,11 @@ fs.readdirSync(__dirname)
 
 // Tüm oyunları getir
 function getAllGames() {
-  return Object.values(gameModules).map(game => game.getSettings());
+  console.log('Available game modules:', Object.keys(gameModules));
+  return Object.values(gameModules).map(game => {
+    console.log('Processing game:', game.id, game.name);
+    return game.getSettings();
+  });
 }
 
 // ID'ye göre oyun getir
@@ -34,5 +38,6 @@ function getGame(gameId) {
 
 module.exports = {
   getAllGames,
-  getGame
+  getGame,
+  games: gameModules
 };

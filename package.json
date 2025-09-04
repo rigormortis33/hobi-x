@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node server/app.js",
     "dev": "nodemon server/app.js",
-    "setup-db": "node -e \"require('child_process').exec('mysql -h srv1787.hstgr.io -u u588148465_hobix -p u588148465_tuncay < ./server/config/schema.sql', (error, stdout, stderr) => { if (error) { console.error('Hata:', error); return; } console.log('Veritabanı şeması başarıyla oluşturuldu!'); })\""
+    "setup-db": "node -e \"require('child_process').exec('mysql -h srv1787.hstgr.io -u u588148465_garibancoder -p u588148465_hobix < ./server/config/schema.sql', (error, stdout, stderr) => { if (error) { console.error('Hata:', error); return; } console.log('Veritabanı şeması başarıyla oluşturuldu!'); })\""
   },
   "keywords": [
     "bulmaca",
@@ -17,6 +17,7 @@
   "author": "Hobi-X",
   "license": "ISC",
   "dependencies": {
+    "axios": "^1.11.0",
     "bcrypt": "^5.1.1",
     "cors": "^2.8.5",
     "dotenv": "^17.2.1",

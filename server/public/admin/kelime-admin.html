@@ -1,0 +1,1024 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kelime Matrisi Admin Paneli</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            opacity: 0.9;
+            font-size: 1.1em;
+        }
+
+        .nav-tabs {
+            display: flex;
+            background: #f8f9fa;
+            border-bottom: 1px solid #dee2e6;
+        }
+
+        .nav-tab {
+            flex: 1;
+            padding: 15px 20px;
+            text-align: center;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .nav-tab.active {
+            background: white;
+            border-bottom-color: #007bff;
+            color: #007bff;
+            font-weight: bold;
+        }
+
+        .nav-tab:hover {
+            background: #e9ecef;
+        }
+
+        .tab-content {
+            padding: 30px;
+        }
+
+        .tab-pane {
+            display: none;
+        }
+
+        .tab-pane.active {
+            display: block;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .stat-card h3 {
+            font-size: 2em;
+            margin-bottom: 5px;
+        }
+
+        .stat-card p {
+            opacity: 0.9;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e1e5e9;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #007bff;
+            box-shadow: 0 0 0 3px rgba(0,123,255,0.1);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,123,255,0.3);
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, #28a745 0%, #1e7e34 100%);
+            color: white;
+        }
+
+        .btn-success:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(40,167,69,0.3);
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #5a6268;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .word-list {
+            margin-top: 30px;
+        }
+
+        .word-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            border: 1px solid #e1e5e9;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            background: #f8f9fa;
+        }
+
+        .word-info {
+            flex: 1;
+        }
+
+        .word-info strong {
+            color: #007bff;
+            font-size: 1.1em;
+        }
+
+        .word-meta {
+            color: #6c757d;
+            font-size: 0.9em;
+            margin-top: 5px;
+        }
+
+        .word-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn-small {
+            padding: 6px 12px;
+            font-size: 14px;
+        }
+
+        .alert {
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .alert-success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .alert-error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #007bff;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .ai-section {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .ai-section h3 {
+            margin-bottom: 15px;
+        }
+
+        .import-section {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .matrix-finder {
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .matrix-grid {
+            display: grid;
+            grid-template-columns: repeat(10, 1fr);
+            gap: 2px;
+            max-width: 400px;
+            margin: 20px auto;
+            background: #333;
+            padding: 10px;
+            border-radius: 8px;
+        }
+
+        .matrix-cell {
+            aspect-ratio: 1;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 14px;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: all 0.2s ease;
+        }
+
+        .matrix-cell:hover {
+            background: #e3f2fd;
+            transform: scale(1.1);
+        }
+
+        .matrix-cell.selected {
+            background: #2196f3;
+            color: white;
+        }
+
+        .found-words {
+            margin-top: 20px;
+        }
+
+        .found-word {
+            background: rgba(255,255,255,0.2);
+            padding: 10px;
+            border-radius: 5px;
+            margin: 5px 0;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .found-word:hover {
+            background: rgba(255,255,255,0.3);
+        }
+
+        @media (max-width: 768px) {
+            .nav-tabs {
+                flex-direction: column;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .matrix-grid {
+                grid-template-columns: repeat(8, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎯 Kelime Matrisi Admin Paneli</h1>
+            <p>Kelime veritabanınızı yönetin ve oyun deneyimini geliştirin</p>
+        </div>
+
+        <div class="nav-tabs">
+            <div class="nav-tab active" onclick="showTab('dashboard')">📊 Dashboard</div>
+            <div class="nav-tab" onclick="showTab('add-word')">➕ Kelime Ekle</div>
+            <div class="nav-tab" onclick="showTab('ai-generator')">🤖 AI Üretimi</div>
+            <div class="nav-tab" onclick="showTab('import')">📥 İçe Aktar</div>
+            <div class="nav-tab" onclick="showTab('matrix-finder')">🔍 Matriks Bulucu</div>
+        </div>
+
+        <div class="tab-content">
+            <!-- Dashboard Tab -->
+            <div id="dashboard" class="tab-pane active">
+                <div id="stats-container">
+                    <div class="loading"></div>
+                    <p>Yükleniyor...</p>
+                </div>
+
+                <div class="word-list">
+                    <h3>📝 Son Eklenen Kelimeler</h3>
+                    <div id="recent-words">
+                        <div class="loading"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Add Word Tab -->
+            <div id="add-word" class="tab-pane">
+                <h3>➕ Yeni Kelime Ekle</h3>
+                <div id="add-word-alert" class="alert"></div>
+
+                <form id="add-word-form">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="word">Kelime *</label>
+                            <input type="text" id="word" name="word" required placeholder="Örnek: bilgisayar">
+                        </div>
+                        <div class="form-group">
+                            <label for="category">Kategori *</label>
+                            <select id="category" name="category" required>
+                                <option value="">Kategori Seçin</option>
+                                <option value="Teknoloji">Teknoloji</option>
+                                <option value="Bilim">Bilim</option>
+                                <option value="Spor">Spor</option>
+                                <option value="Doğa">Doğa</option>
+                                <option value="Ev">Ev</option>
+                                <option value="Meslek">Meslek</option>
+                                <option value="Ulaşım">Ulaşım</option>
+                                <option value="Renk">Renk</option>
+                                <option value="Duygu">Duygu</option>
+                                <option value="Özellik">Özellik</option>
+                                <option value="Meyve">Meyve</option>
+                                <option value="Sebze">Sebze</option>
+                                <option value="Diğer">Diğer</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="difficulty">Zorluk Seviyesi *</label>
+                            <select id="difficulty" name="difficulty" required>
+                                <option value="kolay">Kolay</option>
+                                <option value="orta">Orta</option>
+                                <option value="zor">Zor</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="hint">İpucu (İsteğe bağlı)</label>
+                            <input type="text" id="hint" name="hint" placeholder="Kelime için ipucu">
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">
+                        <span id="add-word-btn-text">➕ Kelime Ekle</span>
+                    </button>
+                </form>
+            </div>
+
+            <!-- AI Generator Tab -->
+            <div id="ai-generator" class="tab-pane">
+                <div class="ai-section">
+                    <h3>🤖 AI Destekli Kelime Üretimi</h3>
+                    <p>OpenAI GPT ile yeni kelime önerileri alın</p>
+                </div>
+
+                <div id="ai-alert" class="alert"></div>
+
+                <form id="ai-form">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="ai-category">Kategori</label>
+                            <select id="ai-category" name="ai-category">
+                                <option value="Teknoloji">Teknoloji</option>
+                                <option value="Bilim">Bilim</option>
+                                <option value="Spor">Spor</option>
+                                <option value="Doğa">Doğa</option>
+                                <option value="Diğer">Diğer</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="ai-difficulty">Zorluk Seviyesi</label>
+                            <select id="ai-difficulty" name="ai-difficulty">
+                                <option value="kolay">Kolay</option>
+                                <option value="orta">Orta</option>
+                                <option value="zor">Zor</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="ai-count">Üretilecek Kelime Sayısı</label>
+                        <select id="ai-count" name="ai-count">
+                            <option value="5">5 Kelime</option>
+                            <option value="10">10 Kelime</option>
+                            <option value="15">15 Kelime</option>
+                        </select>
+                    </div>
+
+                    <button type="submit" class="btn btn-success">
+                        <span id="ai-btn-text">🚀 AI ile Kelime Üret</span>
+                    </button>
+                </form>
+
+                <div id="ai-results" style="display: none;">
+                    <h3>🎯 Önerilen Kelimeler</h3>
+                    <div id="ai-words-list"></div>
+                </div>
+            </div>
+
+            <!-- Import Tab -->
+            <div id="import" class="tab-pane">
+                <div class="import-section">
+                    <h3>📥 Otomatik Kelime İçe Aktarma</h3>
+                    <p>Harici kaynaklardan kelime içe aktarın</p>
+                </div>
+
+                <div id="import-alert" class="alert"></div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="import-source">Kaynak</label>
+                        <select id="import-source" name="import-source">
+                            <option value="wikipedia">Wikipedia</option>
+                            <option value="tdk">TDK Sözlük</option>
+                            <option value="custom">Özel Liste</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="import-category">Hedef Kategori</label>
+                        <select id="import-category" name="import-category">
+                            <option value="Teknoloji">Teknoloji</option>
+                            <option value="Bilim">Bilim</option>
+                            <option value="Spor">Spor</option>
+                            <option value="Doğa">Doğa</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group" id="custom-list-group" style="display: none;">
+                    <label for="custom-words">Kelime Listesi (her satıra bir kelime)</label>
+                    <textarea id="custom-words" name="custom-words" placeholder="kelime1
+kelime2
+kelime3"></textarea>
+                </div>
+
+                <button type="button" class="btn btn-primary" onclick="startImport()">
+                    <span id="import-btn-text">📥 İçe Aktarmayı Başlat</span>
+                </button>
+            </div>
+
+            <!-- Matrix Finder Tab -->
+            <div id="matrix-finder" class="tab-pane">
+                <div class="matrix-finder">
+                    <h3>🔍 Matriks İçinde Kelime Bulucu</h3>
+                    <p>Oyun matrisinde anlamlı kelimeler bulun ve listeye ekleyin</p>
+                </div>
+
+                <div id="matrix-alert" class="alert"></div>
+
+                <div class="form-group">
+                    <label for="matrix-size">Matris Boyutu</label>
+                    <select id="matrix-size" name="matrix-size" onchange="generateMatrix()">
+                        <option value="8">8x8</option>
+                        <option value="10" selected>10x10</option>
+                        <option value="12">12x12</option>
+                    </select>
+                    <button type="button" class="btn btn-secondary" onclick="generateMatrix()" style="margin-left: 10px;">🔄 Yeni Matris</button>
+                </div>
+
+                <div id="matrix-container">
+                    <div class="matrix-grid" id="matrix-grid">
+                        <!-- Matrix cells will be generated here -->
+                    </div>
+                </div>
+
+                <div class="found-words">
+                    <h3>📝 Bulunan Kelimeler</h3>
+                    <div id="found-words-list">
+                        <p>Kelimeler aranacak...</p>
+                    </div>
+                </div>
+
+                <button type="button" class="btn btn-success" onclick="findWordsInMatrix()">
+                    <span id="find-btn-text">🔍 Kelime Ara</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Global variables
+        let currentStats = {};
+        let currentMatrix = [];
+        let selectedCells = [];
+        let foundWords = [];
+
+        // Tab switching
+        function showTab(tabName) {
+            // Hide all tabs
+            const tabs = document.querySelectorAll('.tab-pane');
+            tabs.forEach(tab => tab.classList.remove('active'));
+
+            // Remove active class from nav tabs
+            const navTabs = document.querySelectorAll('.nav-tab');
+            navTabs.forEach(tab => tab.classList.remove('active'));
+
+            // Show selected tab
+            document.getElementById(tabName).classList.add('active');
+            event.target.classList.add('active');
+
+            // Load tab specific data
+            if (tabName === 'dashboard') {
+                loadDashboard();
+            } else if (tabName === 'matrix-finder') {
+                generateMatrix();
+            }
+        }
+
+        // Load dashboard data
+        async function loadDashboard() {
+            try {
+                const response = await fetch('/api/v1/games/kelime-matrisi/stats');
+                const data = await response.json();
+
+                if (data.success) {
+                    currentStats = data.stats;
+                    displayStats(data.stats);
+                    loadRecentWords();
+                }
+            } catch (error) {
+                console.error('Dashboard yüklenirken hata:', error);
+            }
+        }
+
+        // Display statistics
+        function displayStats(stats) {
+            const container = document.getElementById('stats-container');
+            container.innerHTML = `
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <h3>${stats.total}</h3>
+                        <p>Toplam Kelime</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3>${stats.categories.length}</h3>
+                        <p>Kategori</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3>${stats.difficulties.find(d => d.difficulty === 'kolay')?.count || 0}</h3>
+                        <p>Kolay Kelime</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3>${stats.difficulties.find(d => d.difficulty === 'orta')?.count || 0}</h3>
+                        <p>Orta Kelime</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3>${stats.difficulties.find(d => d.difficulty === 'zor')?.count || 0}</h3>
+                        <p>Zor Kelime</p>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Load recent words
+        async function loadRecentWords() {
+            try {
+                const response = await fetch('/api/v1/games/kelime-matrisi/suggest?count=10');
+                const data = await response.json();
+
+                if (data.success) {
+                    displayRecentWords(data.words);
+                }
+            } catch (error) {
+                console.error('Son kelimeler yüklenirken hata:', error);
+            }
+        }
+
+        // Display recent words
+        function displayRecentWords(words) {
+            const container = document.getElementById('recent-words');
+            container.innerHTML = words.map(word => `
+                <div class="word-item">
+                    <div class="word-info">
+                        <strong>${word.word}</strong>
+                        <div class="word-meta">
+                            Kategori: ${word.category} | Zorluk: ${word.difficulty}
+                            ${word.hint ? ` | İpucu: ${word.hint}` : ''}
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Add word form submission
+        document.getElementById('add-word-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const btn = document.getElementById('add-word-btn-text');
+            const originalText = btn.textContent;
+            btn.innerHTML = '<div class="loading"></div> Ekleniyor...';
+
+            const formData = new FormData(e.target);
+            const wordData = {
+                word: formData.get('word').toLowerCase(),
+                category: formData.get('category'),
+                difficulty: formData.get('difficulty'),
+                hint: formData.get('hint') || ''
+            };
+
+            try {
+                const response = await fetch('/api/v1/games/kelime-matrisi/add-word', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(wordData)
+                });
+
+                const data = await response.json();
+                const alert = document.getElementById('add-word-alert');
+
+                if (data.success) {
+                    alert.className = 'alert alert-success';
+                    alert.textContent = data.message;
+                    alert.style.display = 'block';
+                    e.target.reset();
+                    loadDashboard(); // Refresh stats
+                } else {
+                    alert.className = 'alert alert-error';
+                    alert.textContent = data.message;
+                    alert.style.display = 'block';
+                }
+            } catch (error) {
+                const alert = document.getElementById('add-word-alert');
+                alert.className = 'alert alert-error';
+                alert.textContent = 'Kelime eklenirken hata oluştu';
+                alert.style.display = 'block';
+            }
+
+            btn.textContent = originalText;
+        });
+
+        // AI word generation
+        document.getElementById('ai-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const btn = document.getElementById('ai-btn-text');
+            const originalText = btn.textContent;
+            btn.innerHTML = '<div class="loading"></div> Üretiliyor...';
+
+            const formData = new FormData(e.target);
+            const aiData = {
+                category: formData.get('ai-category'),
+                difficulty: formData.get('ai-difficulty'),
+                count: parseInt(formData.get('ai-count'))
+            };
+
+            try {
+                const response = await fetch('/api/v1/games/kelime-matrisi/generate-ai', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(aiData)
+                });
+
+                const data = await response.json();
+                const alert = document.getElementById('ai-alert');
+
+                if (data.success) {
+                    alert.className = 'alert alert-success';
+                    alert.textContent = `${data.words.length} kelime başarıyla üretildi!`;
+                    alert.style.display = 'block';
+                    displayAIResults(data.words);
+                    loadDashboard(); // Refresh stats
+                } else {
+                    alert.className = 'alert alert-error';
+                    alert.textContent = data.message;
+                    alert.style.display = 'block';
+                }
+            } catch (error) {
+                const alert = document.getElementById('ai-alert');
+                alert.className = 'alert alert-error';
+                alert.textContent = 'AI kelime üretimi başarısız';
+                alert.style.display = 'block';
+            }
+
+            btn.textContent = originalText;
+        });
+
+        // Display AI generated words
+        function displayAIResults(words) {
+            const container = document.getElementById('ai-results');
+            const wordsList = document.getElementById('ai-words-list');
+
+            wordsList.innerHTML = words.map(word => `
+                <div class="word-item">
+                    <div class="word-info">
+                        <strong>${word.word}</strong>
+                        <div class="word-meta">
+                            Kategori: ${word.category} | Zorluk: ${word.difficulty}
+                            ${word.hint ? ` | İpucu: ${word.hint}` : ''}
+                        </div>
+                    </div>
+                    <div class="word-actions">
+                        <button class="btn btn-success btn-small" onclick="addWordFromAI('${word.word}', '${word.category}', '${word.difficulty}', '${word.hint}')">
+                            ➕ Ekle
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+
+            container.style.display = 'block';
+        }
+
+        // Add word from AI results
+        async function addWordFromAI(word, category, difficulty, hint) {
+            try {
+                const response = await fetch('/api/v1/games/kelime-matrisi/add-word', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ word, category, difficulty, hint })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    alert('Kelime başarıyla eklendi!');
+                    loadDashboard(); // Refresh stats
+                } else {
+                    alert('Hata: ' + data.message);
+                }
+            } catch (error) {
+                alert('Kelime eklenirken hata oluştu');
+            }
+        }
+
+        // Import source change handler
+        document.getElementById('import-source').addEventListener('change', (e) => {
+            const customList = document.getElementById('custom-list-group');
+            customList.style.display = e.target.value === 'custom' ? 'block' : 'none';
+        });
+
+        // Start import
+        async function startImport() {
+            const btn = document.getElementById('import-btn-text');
+            const originalText = btn.textContent;
+            btn.innerHTML = '<div class="loading"></div> İçe Aktarılıyor...';
+
+            const source = document.getElementById('import-source').value;
+            const category = document.getElementById('import-category').value;
+
+            try {
+                let importData = { source, category };
+
+                if (source === 'custom') {
+                    const words = document.getElementById('custom-words').value
+                        .split('\n')
+                        .map(w => w.trim())
+                        .filter(w => w.length > 0);
+                    importData.words = words;
+                }
+
+                const response = await fetch('/api/v1/games/kelime-matrisi/import', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(importData)
+                });
+
+                const data = await response.json();
+                const alert = document.getElementById('import-alert');
+
+                if (data.success) {
+                    alert.className = 'alert alert-success';
+                    alert.textContent = `${data.addedCount} kelime başarıyla içe aktarıldı!`;
+                    alert.style.display = 'block';
+                    loadDashboard(); // Refresh stats
+                } else {
+                    alert.className = 'alert alert-error';
+                    alert.textContent = data.message;
+                    alert.style.display = 'block';
+                }
+            } catch (error) {
+                const alert = document.getElementById('import-alert');
+                alert.className = 'alert alert-error';
+                alert.textContent = 'İçe aktarma başarısız';
+                alert.style.display = 'block';
+            }
+
+            btn.textContent = originalText;
+        }
+
+        // Generate matrix
+        function generateMatrix() {
+            const size = parseInt(document.getElementById('matrix-size').value);
+            const grid = document.getElementById('matrix-grid');
+            const letters = 'ABCÇDEFGĞHIİJKLMNOÖPRSŞTUÜVYZ';
+
+            grid.innerHTML = '';
+            grid.style.gridTemplateColumns = `repeat(${size}, 1fr)`;
+            currentMatrix = [];
+
+            for (let i = 0; i < size; i++) {
+                currentMatrix[i] = [];
+                for (let j = 0; j < size; j++) {
+                    const letter = letters[Math.floor(Math.random() * letters.length)];
+                    currentMatrix[i][j] = letter;
+
+                    const cell = document.createElement('div');
+                    cell.className = 'matrix-cell';
+                    cell.textContent = letter;
+                    cell.dataset.row = i;
+                    cell.dataset.col = j;
+                    cell.onclick = () => selectCell(i, j);
+                    grid.appendChild(cell);
+                }
+            }
+
+            document.getElementById('found-words-list').innerHTML = '<p>Kelimeler aranacak...</p>';
+        }
+
+        // Select cell in matrix
+        function selectCell(row, col) {
+            const cell = document.querySelector(`[data-row="${row}"][data-col="${col}"]`);
+
+            if (cell.classList.contains('selected')) {
+                cell.classList.remove('selected');
+                selectedCells = selectedCells.filter(c => !(c.row === row && c.col === col));
+            } else {
+                cell.classList.add('selected');
+                selectedCells.push({ row, col, letter: currentMatrix[row][col] });
+            }
+        }
+
+        // Find words in matrix
+        async function findWordsInMatrix() {
+            const btn = document.getElementById('find-btn-text');
+            const originalText = btn.textContent;
+            btn.innerHTML = '<div class="loading"></div> Aranıyor...';
+
+            try {
+                const response = await fetch('/api/v1/games/kelime-matrisi/find-in-matrix', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ matrix: currentMatrix })
+                });
+
+                const data = await response.json();
+                const alert = document.getElementById('matrix-alert');
+
+                if (data.success) {
+                    displayFoundWords(data.foundWords);
+                    if (data.foundWords.length > 0) {
+                        alert.className = 'alert alert-success';
+                        alert.textContent = `${data.foundWords.length} kelime bulundu!`;
+                        alert.style.display = 'block';
+                    } else {
+                        alert.className = 'alert alert-error';
+                        alert.textContent = 'Matriste kelime bulunamadı';
+                        alert.style.display = 'block';
+                    }
+                } else {
+                    alert.className = 'alert alert-error';
+                    alert.textContent = data.message;
+                    alert.style.display = 'block';
+                }
+            } catch (error) {
+                const alert = document.getElementById('matrix-alert');
+                alert.className = 'alert alert-error';
+                alert.textContent = 'Kelime arama başarısız';
+                alert.style.display = 'block';
+            }
+
+            btn.textContent = originalText;
+        }
+
+        // Display found words
+        function displayFoundWords(words) {
+            const container = document.getElementById('found-words-list');
+            foundWords = words;
+
+            if (words.length === 0) {
+                container.innerHTML = '<p>Hiç kelime bulunamadı</p>';
+                return;
+            }
+
+            container.innerHTML = words.map((word, index) => `
+                <div class="found-word" onclick="addFoundWord(${index})">
+                    <strong>${word.word}</strong> (${word.length} harf)
+                    <span style="float: right;">➕ Ekle</span>
+                </div>
+            `).join('');
+        }
+
+        // Add found word to database
+        async function addFoundWord(index) {
+            const word = foundWords[index];
+
+            try {
+                const response = await fetch('/api/v1/games/kelime-matrisi/add-word', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        word: word.word,
+                        category: 'Oyun',
+                        difficulty: word.length > 6 ? 'zor' : word.length > 4 ? 'orta' : 'kolay',
+                        hint: 'Oyun matrisinde bulunan kelime'
+                    })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    alert('Kelime başarıyla eklendi!');
+                    loadDashboard(); // Refresh stats
+                } else {
+                    alert('Hata: ' + data.message);
+                }
+            } catch (error) {
+                alert('Kelime eklenirken hata oluştu');
+            }
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            loadDashboard();
+            generateMatrix();
+        });
+    </script>
+</body>
+</html>

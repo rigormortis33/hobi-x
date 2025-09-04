@@ -1,9 +1,9 @@
 -- Türkçe karakter desteği için veritabanı oluştur (eğer mevcut değilse)
-CREATE DATABASE IF NOT EXISTS u588148465_tuncay
+CREATE DATABASE IF NOT EXISTS u588148465_hobix
 CHARACTER SET utf8mb4
 COLLATE utf8mb4_turkish_ci;
 
-USE u588148465_tuncay;
+USE u588148465_hobix;
 
 -- Kullanıcılar tablosu
 CREATE TABLE IF NOT EXISTS users (
