@@ -27,9 +27,13 @@ async function exportWordsToJson() {
   } catch (error) {
     console.error('❌ Kelime export hatası:', error.message);
   } finally {
-    process.exit(0);
+    // Do nothing here; exiting only when invoked directly
   }
 }
 
-// Script çalıştır
-exportWordsToJson();
+// Script doğrudan çalıştırıldıysa
+if (require.main === module) {
+  exportWordsToJson()
+    .then(() => process.exit(0))
+    .catch(() => process.exit(1));
+}
